@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth();
@@ -12,7 +13,7 @@ const googleProvider = new GoogleAuthProvider();
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.API_KEY_FIREBASE,
+  apiKey: import.meta.env.VITE_API_KEY_FIREBASE,
   authDomain: "tracking-expense-5ede3.firebaseapp.com",
   projectId: "tracking-expense-5ede3",
   storageBucket: "tracking-expense-5ede3.firebasestorage.app",
@@ -24,5 +25,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
 
-export { auth, googleProvider, analytics };
+export { auth, googleProvider, analytics, firestore };

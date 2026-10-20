@@ -1,4 +1,3 @@
-// src/services/expenseService.ts
 import { db } from "../../firebase";
 import {
   collection,

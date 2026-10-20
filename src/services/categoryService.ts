@@ -14,7 +14,7 @@ import {
 
 import { Category, NewCategory } from "../types";
 
-// Collection References
+// Collection Reference
 const categoriesCol = collection(db, "categories");
 
 // Helper to convert Firestore doc to Category object

@@ -17,43 +17,43 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       : 0;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
       {/* Total Budget Card */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+      <div className="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-900 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Total Budget
           </p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">
+          <p className="text-2xl font-bold text-white mt-1">
             $
             {totalBudget.toLocaleString(undefined, {
               minimumFractionDigits: 2,
             })}
           </p>
         </div>
-        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+        <div className="p-3 bg-indigo-900/80 text-indigo-600 rounded-xl">
           <Wallet className="w-6 h-6" />
         </div>
       </div>
 
       {/* Total Spent Card */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+      <div className="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-900 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Total Spent
           </p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">
+          <p className="text-2xl font-bold text-rose-800 mt-1">
             $
             {totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </p>
         </div>
-        <div className="p-3 bg-rose-50 text-rose-600 rounded-xl">
+        <div className="p-3 bg-rose-800/80 text-rose-600 rounded-xl">
           <DollarSign className="w-6 h-6" />
         </div>
       </div>
 
       {/* Remaining Balance Card */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+      <div className="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-900 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Remaining
@@ -65,23 +65,21 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
           </p>
         </div>
         <div
-          className={`p-3 rounded-xl ${remaining >= 0 ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"}`}
+          className={`p-3 rounded-xl ${remaining >= 0 ? "bg-emerald-800/80 text-emerald-600" : "bg-rose-800/80 text-rose-600"}`}
         >
           <PiggyBank className="w-6 h-6" />
         </div>
       </div>
 
       {/* Budget Used Card */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+      <div className="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-900 flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Budget Used
           </p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">
-            {spentPercent}%
-          </p>
+          <p className="text-2xl font-bold text-white mt-1">{spentPercent}%</p>
         </div>
-        <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
+        <div className="p-3 bg-amber-800/80 text-amber-600 rounded-xl">
           <PieChart className="w-6 h-6" />
         </div>
       </div>

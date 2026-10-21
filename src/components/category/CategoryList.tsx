@@ -21,12 +21,12 @@ export const CategoryList: React.FC<CategoryListProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+    <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-bold text-slate-800">Categories Budgets</h2>
         <button
           onClick={onOpenAddCategoryModal}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-semibold hover:bg-indigo-100 transition"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-900/80 text-indigo-600 rounded-lg text-sm font-semibold hover:bg-indigo-900/90 transition"
         >
           <Plus className="w-4 h-4" />
           New Category

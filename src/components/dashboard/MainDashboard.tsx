@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
+import { SummaryCards } from "../cards/SummaryCards";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
@@ -31,6 +32,7 @@ const MainDashboard: React.FC = () => {
           Sign Out
         </button>
       </div>
+      <SummaryCards totalBudget={10000} totalSpent={4500} />
       <p className="text-slate-600">
         Your Auth Context and Firestore service are ready!
       </p>

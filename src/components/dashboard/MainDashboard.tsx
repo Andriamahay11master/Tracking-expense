@@ -2,6 +2,9 @@ import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import { SummaryCards } from "../cards/SummaryCards";
 import { Plus, LogOutIcon } from "lucide-react";
+import { CategoryList } from "../category/CategoryList";
+import expensesData from "../../data/expenses_data";
+import categoriesData from "../../data/category_data";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
@@ -42,9 +45,20 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
       <SummaryCards totalBudget={10000} totalSpent={4500} />
-      <p className="text-slate-600">
-        Your Auth Context and Firestore service are ready!
-      </p>
+      <div className="flex flex-row gap-4">
+        <div className="basis-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800 mb-4">Expenses</h2>
+          {/* Expenses list or chart can go here */}
+        </div>
+        <div className="basis-1/3 bg-white p-1 rounded-2xl shadow-sm border border-slate-100">
+          {/* Category list or chart can go here */}
+          <CategoryList
+            expenses={expensesData}
+            categories={categoriesData}
+            onOpenAddCategoryModal={() => {}}
+          />
+        </div>
+      </div>
     </div>
   );
 };

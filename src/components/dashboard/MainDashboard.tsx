@@ -50,7 +50,7 @@ const MainDashboard: React.FC = () => {
           <h2 className="text-lg font-bold text-slate-800 mb-4">Expenses</h2>
           {/* Expenses list or chart can go here */}
         </div>
-        <div className="basis-1/3 bg-white p-1 rounded-2xl shadow-sm border border-slate-100">
+        <div className="basis-1/3 rounded-2xl shadow-sm border border-slate-900">
           {/* Category list or chart can go here */}
           <CategoryList
             expenses={expensesData}

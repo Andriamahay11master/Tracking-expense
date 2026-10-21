@@ -21,15 +21,15 @@ export const CategoryList: React.FC<CategoryListProps> = ({
   };
 
   return (
-    <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900">
+    <div className="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-900">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-lg font-bold text-slate-800">Categories Budgets</h2>
+        <h2 className="text-lg font-bold text-white">Categories Budgets</h2>
         <button
           onClick={onOpenAddCategoryModal}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-900/80 text-indigo-600 rounded-lg text-sm font-semibold hover:bg-indigo-900/90 transition"
+          className="inline-flex items-center gap-1 px-3 py-1 bg-slate-800 text-indigo-400 rounded-lg text-sm font-semibold hover:bg-slate-700 transition"
         >
           <Plus className="w-4 h-4" />
-          New Category
+          New
         </button>
       </div>
 
@@ -48,14 +48,17 @@ export const CategoryList: React.FC<CategoryListProps> = ({
             const isOver = spent > cat.monthlyBudget;
 
             return (
-              <div key={cat.id} className="p-3.5 bg-slate-50 rounded-xl">
+              <div
+                key={cat.id}
+                className="p-3 bg-slate-950/60 border border-slate-800/80 rounded-xl"
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 mb-1">
                     <div
                       className="w-3.5 h-3.5 rounded-full"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <span className="font-semibold text-slate-700 text-sm">
+                    <span className="font-semibold text-white text-sm">
                       {cat.name}
                     </span>
                   </div>
@@ -68,7 +71,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
                 </div>
 
                 {/* Progress bar */}
-                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${
                       isOver

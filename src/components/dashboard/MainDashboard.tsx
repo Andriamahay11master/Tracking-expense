@@ -1,5 +1,10 @@
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
+import { SummaryCards } from "../cards/SummaryCards";
+import { Plus, LogOutIcon } from "lucide-react";
+import { CategoryList } from "../category/CategoryList";
+import expensesData from "../../data/expenses_data";
+import categoriesData from "../../data/category_data";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
@@ -21,19 +26,39 @@ const MainDashboard: React.FC = () => {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>
-        <button
-          onClick={logout}
-          className="px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
-        >
-          Sign Out
-        </button>
+    <div className="container mx-auto px-4">
+      <div className="flex flex-row items-center justify-between py-4">
+        <div className="basis-1/2">
+          <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>
+        </div>
+        <div className="basis-1/2 flex justify-end gap-2">
+          <button className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2">
+            <Plus /> Add Expense
+          </button>
+          <button
+            onClick={logout}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
+          >
+            <LogOutIcon className="w-4 h-4 mr-1" />
+            Sign Out
+          </button>
+        </div>
       </div>
-      <p className="text-slate-600">
-        Your Auth Context and Firestore service are ready!
-      </p>
+      <SummaryCards totalBudget={10000} totalSpent={4500} />
+      <div className="flex flex-row gap-4">
+        <div className="basis-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <h2 className="text-lg font-bold text-slate-800 mb-4">Expenses</h2>
+          {/* Expenses list or chart can go here */}
+        </div>
+        <div className="basis-1/3 rounded-2xl shadow-sm border border-slate-900">
+          {/* Category list or chart can go here */}
+          <CategoryList
+            expenses={expensesData}
+            categories={categoriesData}
+            onOpenAddCategoryModal={() => {}}
+          />
+        </div>
+      </div>
     </div>
   );
 };

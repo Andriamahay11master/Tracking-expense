@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Expense, Category } from "../../types";
-import { Search, Trash2, Filter } from "lucide-react";
+import { Search, Trash2, Filter, Edit } from "lucide-react";
 
 interface TransactionListProps {
   expenses: Expense[];
   categories: Category[];
+  onEditExpense: (expenseId: string) => void;
   onDeleteExpense: (expenseId: string) => Promise<void>;
 }
 
 export const TransactionList: React.FC<TransactionListProps> = ({
   expenses,
   categories,
+  onEditExpense,
   onDeleteExpense,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,7 +80,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              <tr className="border-b border-slate-400 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 <th className="pb-3 px-2">Date</th>
                 <th className="pb-3 px-2">Description</th>
                 <th className="pb-3 px-2">Category</th>
@@ -86,16 +88,16 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                 <th className="pb-3 px-2 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
+            <tbody className="divide-y divide-slate-400 text-sm text-slate-700">
               {filteredExpenses.map((exp) => {
                 const category = categoryMap.get(exp.categoryId);
 
                 return (
-                  <tr key={exp.id} className="hover:bg-slate-50/80 transition">
-                    <td className="py-3 px-2 text-slate-500 text-xs whitespace-nowrap">
+                  <tr key={exp.id} className="hover:bg-slate-800/80 transition">
+                    <td className="py-3 px-2 text-slate-300 text-xs whitespace-nowrap">
                       {exp.date}
                     </td>
-                    <td className="py-3 px-2 font-medium text-slate-800">
+                    <td className="py-3 px-2 font-medium text-white">
                       {exp.description}
                     </td>
                     <td className="py-3 px-2">
@@ -115,13 +117,20 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                         {category?.name || "Uncategorized"}
                       </span>
                     </td>
-                    <td className="py-3 px-2 text-right font-semibold text-slate-800">
+                    <td className="py-3 px-2 text-right font-semibold text-white">
                       ${exp.amount.toFixed(2)}
                     </td>
                     <td className="py-3 px-2 text-center">
                       <button
+                        className="p-1.5 text-slate-400 hover:text-indigo-500 rounded-lg hover:bg-indigo-900/80 transition mr-1"
+                        title="Edit Expense"
+                        onClick={() => exp.id && onEditExpense(exp.id)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
                         onClick={() => exp.id && onDeleteExpense(exp.id)}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+                        className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-rose-900/80 transition"
                         title="Delete Expense"
                       >
                         <Trash2 className="w-4 h-4" />

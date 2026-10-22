@@ -52,6 +52,10 @@ const MainDashboard: React.FC = () => {
           <TransactionList
             expenses={expensesData}
             categories={categoriesData}
+            onEditExpense={(expenseId: string) => {
+              // Implement edit logic here
+              console.log(`Edit expense with ID: ${expenseId}`);
+            }}
             onDeleteExpense={async (expenseId: string) => {
               // Implement deletion logic here
               console.log(`Delete expense with ID: ${expenseId}`);

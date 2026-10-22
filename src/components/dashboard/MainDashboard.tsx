@@ -5,10 +5,13 @@ import { Plus, LogOutIcon } from "lucide-react";
 import { CategoryList } from "../category/CategoryList";
 import expensesData from "../../data/expenses_data";
 import categoriesData from "../../data/category_data";
+import { TransactionList } from "../transaction/TransactionList";
+import { AddExpenseModal } from "../modal/AddExpenseModal";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
-
+  const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] =
+    React.useState(false);
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
@@ -32,7 +35,10 @@ const MainDashboard: React.FC = () => {
           <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>
         </div>
         <div className="basis-1/2 flex justify-end gap-2">
-          <button className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2">
+          <button
+            className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
+            onClick={() => setIsAddExpenseModalOpen(true)}
+          >
             <Plus /> Add Expense
           </button>
           <button
@@ -46,11 +52,22 @@ const MainDashboard: React.FC = () => {
       </div>
       <SummaryCards totalBudget={10000} totalSpent={4500} />
       <div className="flex flex-row gap-4">
-        <div className="basis-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">Expenses</h2>
+        <div className="basis-2/3">
           {/* Expenses list or chart can go here */}
+          <TransactionList
+            expenses={expensesData}
+            categories={categoriesData}
+            onEditExpense={(expenseId: string) => {
+              // Implement edit logic here
+              console.log(`Edit expense with ID: ${expenseId}`);
+            }}
+            onDeleteExpense={async (expenseId: string) => {
+              // Implement deletion logic here
+              console.log(`Delete expense with ID: ${expenseId}`);
+            }}
+          />
         </div>
-        <div className="basis-1/3 rounded-2xl shadow-sm border border-slate-900">
+        <div className="basis-1/3">
           {/* Category list or chart can go here */}
           <CategoryList
             expenses={expensesData}
@@ -59,6 +76,16 @@ const MainDashboard: React.FC = () => {
           />
         </div>
       </div>
+
+      <AddExpenseModal
+        isOpen={isAddExpenseModalOpen}
+        onClose={() => setIsAddExpenseModalOpen(false)}
+        categories={categoriesData}
+        onAddExpense={async (newExpense) => {
+          // Implement add expense logic here
+          console.log("Adding new expense:", newExpense);
+        }}
+      />
     </div>
   );
 };

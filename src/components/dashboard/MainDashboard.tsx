@@ -5,6 +5,7 @@ import { Plus, LogOutIcon } from "lucide-react";
 import { CategoryList } from "../category/CategoryList";
 import expensesData from "../../data/expenses_data";
 import categoriesData from "../../data/category_data";
+import { TransactionList } from "../transaction/TransactionList";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
@@ -47,8 +48,15 @@ const MainDashboard: React.FC = () => {
       <SummaryCards totalBudget={10000} totalSpent={4500} />
       <div className="flex flex-row gap-4">
         <div className="basis-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">Expenses</h2>
           {/* Expenses list or chart can go here */}
+          <TransactionList
+            expenses={expensesData}
+            categories={categoriesData}
+            onDeleteExpense={async (expenseId: string) => {
+              // Implement deletion logic here
+              console.log(`Delete expense with ID: ${expenseId}`);
+            }}
+          />
         </div>
         <div className="basis-1/3 rounded-2xl shadow-sm border border-slate-900">
           {/* Category list or chart can go here */}

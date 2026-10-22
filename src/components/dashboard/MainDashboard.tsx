@@ -6,10 +6,12 @@ import { CategoryList } from "../category/CategoryList";
 import expensesData from "../../data/expenses_data";
 import categoriesData from "../../data/category_data";
 import { TransactionList } from "../transaction/TransactionList";
+import { AddExpenseModal } from "../modal/AddExpenseModal";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
-
+  const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] =
+    React.useState(false);
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
@@ -33,7 +35,10 @@ const MainDashboard: React.FC = () => {
           <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>
         </div>
         <div className="basis-1/2 flex justify-end gap-2">
-          <button className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2">
+          <button
+            className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
+            onClick={() => setIsAddExpenseModalOpen(true)}
+          >
             <Plus /> Add Expense
           </button>
           <button
@@ -71,6 +76,16 @@ const MainDashboard: React.FC = () => {
           />
         </div>
       </div>
+
+      <AddExpenseModal
+        isOpen={isAddExpenseModalOpen}
+        onClose={() => setIsAddExpenseModalOpen(false)}
+        categories={categoriesData}
+        onAddExpense={async (newExpense) => {
+          // Implement add expense logic here
+          console.log("Adding new expense:", newExpense);
+        }}
+      />
     </div>
   );
 };

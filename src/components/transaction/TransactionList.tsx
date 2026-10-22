@@ -32,11 +32,9 @@ export const TransactionList: React.FC<TransactionListProps> = ({
   });
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+    <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="text-lg font-bold text-slate-800">
-          Recent Transactions
-        </h2>
+        <h2 className="text-lg font-bold text-white">Recent Transactions</h2>
 
         {/* Search & Category Filter Controls */}
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
@@ -48,7 +46,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 transition placeholder:text-slate-400 text-white"
             />
           </div>
 
@@ -57,7 +55,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="pl-3 pr-8 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer"
+              className="pl-3 pr-8 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 appearance-none cursor-pointer"
             >
               <option value="ALL">All Categories</option>
               {categories.map((cat) => (

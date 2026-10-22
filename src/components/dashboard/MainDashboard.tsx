@@ -47,7 +47,7 @@ const MainDashboard: React.FC = () => {
       </div>
       <SummaryCards totalBudget={10000} totalSpent={4500} />
       <div className="flex flex-row gap-4">
-        <div className="basis-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+        <div className="basis-2/3">
           {/* Expenses list or chart can go here */}
           <TransactionList
             expenses={expensesData}
@@ -58,7 +58,7 @@ const MainDashboard: React.FC = () => {
             }}
           />
         </div>
-        <div className="basis-1/3 rounded-2xl shadow-sm border border-slate-900">
+        <div className="basis-1/3">
           {/* Category list or chart can go here */}
           <CategoryList
             expenses={expensesData}

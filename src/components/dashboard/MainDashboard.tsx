@@ -7,10 +7,13 @@ import expensesData from "../../data/expenses_data";
 import categoriesData from "../../data/category_data";
 import { TransactionList } from "../transaction/TransactionList";
 import { AddExpenseModal } from "../modal/AddExpenseModal";
+import { AddCategoryModal } from "../modal/AddCategoryModal";
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] =
+    React.useState(false);
+  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
   if (!user) {
     return (
@@ -72,7 +75,7 @@ const MainDashboard: React.FC = () => {
           <CategoryList
             expenses={expensesData}
             categories={categoriesData}
-            onOpenAddCategoryModal={() => {}}
+            onOpenAddCategoryModal={() => setIsAddCategoryModalOpen(true)}
           />
         </div>
       </div>
@@ -84,6 +87,15 @@ const MainDashboard: React.FC = () => {
         onAddExpense={async (newExpense) => {
           // Implement add expense logic here
           console.log("Adding new expense:", newExpense);
+        }}
+      />
+
+      <AddCategoryModal
+        isOpen={isAddCategoryModalOpen}
+        onClose={() => setIsAddCategoryModalOpen(false)}
+        onAddCategory={async (newCategory) => {
+          // Implement add category logic here
+          console.log("Adding new category:", newCategory);
         }}
       />
     </div>

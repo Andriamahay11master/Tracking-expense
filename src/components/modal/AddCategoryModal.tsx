@@ -58,10 +58,10 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+      <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-          <h3 className="font-bold text-slate-800 text-lg">Create Category</h3>
+        <div className="flex justify-between items-center px-6 py-4 border-b border-slate-500 bg-slate-700/50">
+          <h3 className="font-bold text-white text-lg">Create Category</h3>
           <button
             onClick={onClose}
             className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
@@ -85,7 +85,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 placeholder="e.g. Dining Out"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-900 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 placeholder="500.00"
                 value={monthlyBudget}
                 onChange={(e) => setMonthlyBudget(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-900 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -123,7 +123,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                   onClick={() => setColor(presetColor)}
                   className={`w-7 h-7 rounded-full border-2 transition ${
                     color === presetColor
-                      ? "border-slate-800 scale-110"
+                      ? "border-white scale-110"
                       : "border-transparent"
                   }`}
                   style={{ backgroundColor: presetColor }}

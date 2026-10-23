@@ -1,7 +1,18 @@
 // src/components/AddCategoryModal.tsx
 import React, { useState } from "react";
 import { NewCategory } from "../../types";
-import { X, Tag, DollarSign, Palette } from "lucide-react";
+import {
+  X,
+  Tag,
+  DollarSign,
+  Palette,
+  ShoppingBag,
+  Car,
+  HeartPulse,
+  Coffee,
+  House,
+  Film,
+} from "lucide-react";
 
 interface AddCategoryModalProps {
   isOpen: boolean;
@@ -20,6 +31,15 @@ const PRESET_COLORS = [
   "#64748B", // Slate
 ];
 
+const PRELIST_ICON = [
+  { name: "House", icon: House },
+  { name: "Shopping", icon: ShoppingBag },
+  { name: "Car", icon: Car },
+  { name: "Health", icon: HeartPulse },
+  { name: "Coffee", icon: Coffee },
+  { name: "Entertainment", icon: Film },
+];
+
 export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   isOpen,
   onClose,
@@ -28,6 +48,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   const [name, setName] = useState<string>("");
   const [monthlyBudget, setMonthlyBudget] = useState<string>("");
   const [color, setColor] = useState<string>(PRESET_COLORS[0]);
+  const [icon, setIcon] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   if (!isOpen) return null;
@@ -145,6 +166,33 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                   <Palette className="w-3.5 h-3.5" />
                 </div>
               </label>
+            </div>
+          </div>
+
+          {/*Icon category*/}
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+              Icon Category
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {PRELIST_ICON.map((item) => {
+                return (
+                  <button
+                    type="button"
+                    key={item.name}
+                    onClick={() => setIcon(item.name)}
+                    className={`w-7 h-7 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-500 hover:border-slate-500 transition ${
+                      icon === item.name
+                        ? "border-white scale-110"
+                        : "border-transparent"
+                    }`}
+                  >
+                    {React.createElement(item.icon, {
+                      className: "w-4 h-4 text-white",
+                    })}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

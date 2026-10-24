@@ -7,7 +7,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  TooltipProps,
 } from "recharts";
 import { Category, Expense } from "../../types";
 
@@ -23,7 +22,12 @@ interface PieDataPoint {
 }
 
 // Custom Tooltip component for Recharts
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ payload: PieDataPoint }>;
+}
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as PieDataPoint;
     return (

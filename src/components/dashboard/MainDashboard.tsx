@@ -8,6 +8,13 @@ import categoriesData from "../../data/category_data";
 import { TransactionList } from "../transaction/TransactionList";
 import { AddExpenseModal } from "../modal/AddExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
+import { ExpensePieChart } from "../charts/ExpensePieChart";
+import { DailyBarChart } from "../charts/DailyBarChart";
+
+const selectedMonth = "2023-07";
+const monthlyExpenses = expensesData.filter((expense) =>
+  expense.date.startsWith(`${selectedMonth}-`),
+);
 
 const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
@@ -15,6 +22,7 @@ const MainDashboard: React.FC = () => {
     React.useState(false);
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
+
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
@@ -54,6 +62,20 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
       <SummaryCards totalBudget={10000} totalSpent={4500} />
+      <div className="flex flex-row gap-4 py-4">
+        <div className="basis-2/3">
+          <DailyBarChart
+            expenses={monthlyExpenses}
+            currentMonth={selectedMonth}
+          />
+        </div>
+        <div className="basis-1/3">
+          <ExpensePieChart
+            categories={categoriesData}
+            expenses={monthlyExpenses}
+          />
+        </div>
+      </div>
       <div className="flex flex-row gap-4">
         <div className="basis-2/3">
           {/* Expenses list or chart can go here */}

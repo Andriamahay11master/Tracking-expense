@@ -22,11 +22,17 @@ interface BarDataPoint {
   total: number;
 }
 
+interface CustomBarTooltipProps {
+  active?: boolean;
+  payload?: Array<{ payload: BarDataPoint; value?: number }>;
+  label?: string;
+}
+
 const CustomBarTooltip = ({
   active,
   payload,
   label,
-}: TooltipProps<number, string>) => {
+}: CustomBarTooltipProps) => {
   if (active && payload && payload.length) {
     const value = payload[0].value || 0;
     return (

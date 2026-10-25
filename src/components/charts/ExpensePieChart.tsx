@@ -64,7 +64,7 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({
 
   if (data.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center min-h-[300px]">
+      <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900 flex flex-col items-center justify-center min-h-[300px]">
         <p className="text-sm text-slate-400">
           No expenses logged for this period.
         </p>
@@ -73,8 +73,8 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({
   }
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-      <h2 className="text-lg font-bold text-slate-800 mb-4">
+    <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900">
+      <h2 className="text-lg font-bold text-white mb-4">
         Spending by Category
       </h2>
       <div className="h-64 w-full">
@@ -84,9 +84,9 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={60}
+              innerRadius={40}
               outerRadius={85}
-              paddingAngle={4}
+              paddingAngle={7}
               dataKey="value"
             >
               {data.map((entry, index) => (
@@ -97,8 +97,9 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({
             <Legend
               verticalAlign="bottom"
               height={36}
+              iconType="circle"
               formatter={(value) => (
-                <span className="text-xs text-slate-600 font-medium">
+                <span className="text-xs text-slate-500 font-medium">
                   {value}
                 </span>
               )}

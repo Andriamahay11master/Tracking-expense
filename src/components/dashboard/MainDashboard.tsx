@@ -11,12 +11,30 @@ import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
 
-const selectedMonth = "2023-07";
-const monthlyExpenses = expensesData.filter((expense) =>
-  expense.date.startsWith(`${selectedMonth}-`),
-);
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const currentYear = new Date().getFullYear();
 
 const MainDashboard: React.FC = () => {
+  const [selectedMonth, setSelectedMonth] = React.useState(
+    `${currentYear}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
+  );
+  const monthlyExpenses = expensesData.filter((expense) =>
+    expense.date.startsWith(`${selectedMonth}-`),
+  );
   const { user, loginWithGoogle, logout } = useAuth();
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] =
     React.useState(false);
@@ -52,6 +70,23 @@ const MainDashboard: React.FC = () => {
           >
             <Plus /> Add Expense
           </button>
+          {/* filter by month and year */}
+          <select
+            className="px-3 py-2 bg-slate-800 text-white rounded-md focus:outline-none mr-2"
+            value={selectedMonth}
+            onChange={(e) => {
+              setSelectedMonth(e.target.value);
+            }}
+          >
+            {months.map((month, index) => {
+              const monthValue = `${currentYear}-${String(index + 1).padStart(2, "0")}`;
+              return (
+                <option key={monthValue} value={monthValue}>
+                  {month} {currentYear}
+                </option>
+              );
+            })}
+          </select>
           <button
             onClick={logout}
             className="flex items-center gap-2 px-4 py-2 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"

@@ -6,7 +6,7 @@ const expensesData = [
     description: "Groceries",
     name: "Groceries",
     amount: 50,
-    date: "2023-07-01",
+    date: "2026-07-01",
   },
   {
     id: "2",
@@ -15,7 +15,7 @@ const expensesData = [
     description: "Movie tickets",
     name: "Entertainment",
     amount: 100,
-    date: "2023-07-02",
+    date: "2026-07-02",
   },
   {
     id: "3",
@@ -24,7 +24,7 @@ const expensesData = [
     description: "Electricity",
     name: "Utilities",
     amount: 75,
-    date: "2023-07-03",
+    date: "2026-07-03",
   },
   {
     id: "4",
@@ -33,7 +33,7 @@ const expensesData = [
     description: "Gas",
     name: "Transportation",
     amount: 30,
-    date: "2023-07-04",
+    date: "2026-07-04",
   },
 ];
 

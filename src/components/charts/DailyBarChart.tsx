@@ -8,7 +8,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  TooltipProps,
 } from "recharts";
 import { Expense } from "../../types";
 
@@ -77,8 +76,8 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
   );
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-      <h2 className="text-lg font-bold text-slate-800 mb-4">
+    <div className="bg-slate-900/80 p-6 rounded-2xl shadow-sm border border-slate-900">
+      <h2 className="text-lg font-bold text-white mb-4">
         Daily Spending Velocity
       </h2>
       <div className="h-64 w-full">
@@ -88,7 +87,7 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
             margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
             <CartesianGrid
-              strokeDasharray="3 3"
+              strokeDasharray="2 2"
               vertical={false}
               stroke="#f1f5f9"
             />

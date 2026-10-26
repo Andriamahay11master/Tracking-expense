@@ -4,7 +4,7 @@ const categoryData = [
     userId: "1",
     name: "Food",
     color: "#FF0000",
-    icon: "🍔",
+    icon: "Coffee",
     monthlyBudget: 1000,
   },
   {
@@ -12,7 +12,7 @@ const categoryData = [
     userId: "1",
     name: "Entertainment",
     color: "#00FF00",
-    icon: "🎉",
+    icon: "Film",
     monthlyBudget: 500,
   },
   {
@@ -20,7 +20,7 @@ const categoryData = [
     userId: "1",
     name: "Transportation",
     color: "#0000FF",
-    icon: "🚗",
+    icon: "Car",
     monthlyBudget: 200,
   },
 ];

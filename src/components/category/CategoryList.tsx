@@ -1,6 +1,7 @@
 import React from "react";
 import { Category, Expense } from "../../types";
-import { Plus } from "lucide-react";
+import { Plus, Tag } from "lucide-react";
+import { CATEGORY_ICONS } from "./categoryIcons";
 
 interface CategoryListProps {
   categories: Category[];
@@ -41,6 +42,10 @@ export const CategoryList: React.FC<CategoryListProps> = ({
         <div className="space-y-4">
           {categories.map((cat) => {
             const spent = getCategorySpent(cat.id!);
+            const Icon =
+              Object.entries(CATEGORY_ICONS).find(
+                ([name]) => name === cat.icon,
+              )?.[1] ?? Tag;
             const percentage =
               cat.monthlyBudget > 0
                 ? Math.min((spent / cat.monthlyBudget) * 100, 100)
@@ -54,10 +59,9 @@ export const CategoryList: React.FC<CategoryListProps> = ({
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2.5 mb-1">
-                    <div
-                      className="w-3.5 h-3.5 rounded-full"
-                      style={{ backgroundColor: cat.color }}
-                    />
+                    <div className="flex flex-row">
+                      <Icon className="w-5 h-5 text-white mr-2" />
+                    </div>
                     <span className="font-semibold text-white text-sm">
                       {cat.name}
                     </span>

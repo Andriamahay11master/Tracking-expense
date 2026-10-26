@@ -167,10 +167,7 @@ const MainDashboard: React.FC = () => {
           />
         </div>
         <div className="basis-1/3">
-          <ExpensePieChart
-            categories={categoriesData}
-            expenses={monthlyExpenses}
-          />
+          <ExpensePieChart categories={categories} expenses={monthlyExpenses} />
         </div>
       </div>
       <div className="flex flex-row gap-4">

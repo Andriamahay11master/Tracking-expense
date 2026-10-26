@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Expense, Category } from "../../types";
-import { Search, Trash2, Filter, Edit } from "lucide-react";
+import { Search, Trash2, Filter, Edit, Tag } from "lucide-react";
+import { CATEGORY_ICONS } from "../category/categoryIcons";
 
 interface TransactionListProps {
   expenses: Expense[];
@@ -91,6 +92,11 @@ export const TransactionList: React.FC<TransactionListProps> = ({
             <tbody className="divide-y divide-slate-400 text-sm text-slate-700">
               {filteredExpenses.map((exp) => {
                 const category = categoryMap.get(exp.categoryId);
+                const CategoryIcon =
+                  Object.entries(CATEGORY_ICONS).find(
+                    ([name]) => name === category?.icon,
+                  )?.[1] ?? Tag;
+                const categoryColor = category?.color || "#94a3b8";
 
                 return (
                   <tr key={exp.id} className="hover:bg-slate-800/80 transition">
@@ -101,18 +107,11 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                       {exp.description}
                     </td>
                     <td className="py-3 px-2">
-                      <span
-                        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium"
-                        style={{
-                          backgroundColor: `${category?.color || "#94a3b8"}20`,
-                          color: category?.color || "#475569",
-                        }}
-                      >
-                        <span
-                          className="w-2 h-2 rounded-full"
-                          style={{
-                            backgroundColor: category?.color || "#94a3b8",
-                          }}
+                      <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-300">
+                        <CategoryIcon
+                          className="w-4 h-4 shrink-0"
+                          style={{ color: categoryColor }}
+                          aria-hidden="true"
                         />
                         {category?.name || "Uncategorized"}
                       </span>

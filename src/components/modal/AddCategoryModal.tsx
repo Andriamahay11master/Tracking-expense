@@ -6,13 +6,8 @@ import {
   Tag,
   DollarSign,
   Palette,
-  ShoppingBag,
-  Car,
-  HeartPulse,
-  Coffee,
-  House,
-  Film,
 } from "lucide-react";
+import { CATEGORY_ICONS } from "../category/categoryIcons";
 
 interface AddCategoryModalProps {
   isOpen: boolean;
@@ -31,14 +26,9 @@ const PRESET_COLORS = [
   "#64748B", // Slate
 ];
 
-const PRELIST_ICON = [
-  { name: "House", icon: House },
-  { name: "Shopping", icon: ShoppingBag },
-  { name: "Car", icon: Car },
-  { name: "Health", icon: HeartPulse },
-  { name: "Coffee", icon: Coffee },
-  { name: "Entertainment", icon: Film },
-];
+const PRELIST_ICON = Object.entries(CATEGORY_ICONS).filter(
+  ([name]) => name !== "Film",
+).map(([name, icon]) => ({ name, icon }));
 
 export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   isOpen,
@@ -48,7 +38,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   const [name, setName] = useState<string>("");
   const [monthlyBudget, setMonthlyBudget] = useState<string>("");
   const [color, setColor] = useState<string>(PRESET_COLORS[0]);
-  const [icon, setIcon] = useState<string>("");
+  const [icon, setIcon] = useState<string>("House");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   if (!isOpen) return null;
@@ -63,12 +53,14 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         name,
         monthlyBudget: parseFloat(monthlyBudget),
         color,
+        icon,
       });
 
       // Reset form & close
       setName("");
       setMonthlyBudget("");
       setColor(PRESET_COLORS[0]);
+      setIcon("House");
       setIsSubmitting(false);
       onClose();
     } catch (error) {

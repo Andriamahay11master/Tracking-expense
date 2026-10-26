@@ -1,18 +1,14 @@
 // src/components/AddCategoryModal.tsx
 import React, { useState } from "react";
 import { NewCategory } from "../../types";
-import {
-  X,
-  Tag,
-  DollarSign,
-  Palette,
-} from "lucide-react";
+import { db } from "../../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { X, Tag, DollarSign, Palette } from "lucide-react";
 import { CATEGORY_ICONS } from "../category/categoryIcons";
 
 interface AddCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddCategory: (category: NewCategory) => Promise<void>;
 }
 
 const PRESET_COLORS = [
@@ -26,14 +22,13 @@ const PRESET_COLORS = [
   "#64748B", // Slate
 ];
 
-const PRELIST_ICON = Object.entries(CATEGORY_ICONS).filter(
-  ([name]) => name !== "Film",
-).map(([name, icon]) => ({ name, icon }));
+const PRELIST_ICON = Object.entries(CATEGORY_ICONS)
+  .filter(([name]) => name !== "Film")
+  .map(([name, icon]) => ({ name, icon }));
 
 export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   isOpen,
   onClose,
-  onAddCategory,
 }) => {
   const [name, setName] = useState<string>("");
   const [monthlyBudget, setMonthlyBudget] = useState<string>("");
@@ -48,13 +43,15 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
     if (!name || !monthlyBudget) return;
 
     try {
-      setIsSubmitting(true);
-      await onAddCategory({
+      const newCategory: NewCategory = {
         name,
         monthlyBudget: parseFloat(monthlyBudget),
         color,
         icon,
-      });
+      };
+
+      await setDoc(doc(db, "categories", name), newCategory);
+      setIsSubmitting(true);
 
       // Reset form & close
       setName("");

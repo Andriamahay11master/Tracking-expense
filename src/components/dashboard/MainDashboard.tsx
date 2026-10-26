@@ -150,10 +150,6 @@ const MainDashboard: React.FC = () => {
       <AddCategoryModal
         isOpen={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
-        onAddCategory={async (newCategory) => {
-          // Implement add category logic here
-          console.log("Adding new category:", newCategory);
-        }}
       />
     </div>
   );

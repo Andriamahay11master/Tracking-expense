@@ -10,8 +10,9 @@ import { AddExpenseModal } from "../modal/AddExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
-import { Category, NewCategory } from "../../types";
+import { Category, Expense, NewCategory, NewExpense } from "../../types";
 import { addCategory, getCategories } from "../../services/categoryService";
+import { addExpense, getMonthlyExpenses } from "../../services/expenseService";
 
 const months = [
   "January",
@@ -34,7 +35,8 @@ const MainDashboard: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = React.useState(
     `${currentYear}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
   );
-  const monthlyExpenses = expensesData.filter((expense) =>
+  const [expenses, setExpenses] = React.useState<Expense[]>([]);
+  const monthlyExpenses = expenses.filter((expense) =>
     expense.date.startsWith(`${selectedMonth}-`),
   );
   const { user, loginWithGoogle, logout } = useAuth();
@@ -48,6 +50,7 @@ const MainDashboard: React.FC = () => {
   React.useEffect(() => {
     if (!userId) {
       setCategories([]);
+      setExpenses([]);
       return;
     }
 
@@ -62,10 +65,19 @@ const MainDashboard: React.FC = () => {
     };
 
     void loadCategories();
+    const loadExpenses = async () => {
+      try {
+        const userExpenses = await getMonthlyExpenses(userId, selectedMonth);
+        if (isActive) setExpenses(userExpenses);
+      } catch (error) {
+        console.error("Failed to load expenses:", error);
+      }
+    };
+    void loadExpenses();
     return () => {
       isActive = false;
     };
-  }, [userId]);
+  }, [userId, selectedMonth]);
 
   const handleAddCategory = async (newCategory: NewCategory) => {
     if (!userId) {
@@ -76,6 +88,18 @@ const MainDashboard: React.FC = () => {
     setCategories((currentCategories) => [
       ...currentCategories,
       { ...newCategory, id, userId },
+    ]);
+  };
+
+  const handleAddExpense = async (newExpense: NewExpense) => {
+    if (!userId) {
+      throw new Error("You must be signed in to add an expense.");
+    }
+
+    const id = await addExpense(userId, newExpense);
+    setExpenses((currentExpenses) => [
+      ...currentExpenses,
+      { ...newExpense, id, userId },
     ]);
   };
 
@@ -153,8 +177,8 @@ const MainDashboard: React.FC = () => {
         <div className="basis-2/3">
           {/* Expenses list or chart can go here */}
           <TransactionList
-            expenses={expensesData}
-            categories={categoriesData}
+            expenses={monthlyExpenses}
+            categories={categories}
             onEditExpense={(expenseId: string) => {
               // Implement edit logic here
               console.log(`Edit expense with ID: ${expenseId}`);
@@ -168,7 +192,7 @@ const MainDashboard: React.FC = () => {
         <div className="basis-1/3">
           {/* Category list or chart can go here */}
           <CategoryList
-            expenses={expensesData}
+            expenses={monthlyExpenses}
             categories={categories}
             onOpenAddCategoryModal={() => setIsAddCategoryModalOpen(true)}
           />
@@ -179,10 +203,7 @@ const MainDashboard: React.FC = () => {
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
         categories={categories}
-        onAddExpense={async (newExpense) => {
-          // Implement add expense logic here
-          console.log("Adding new expense:", newExpense);
-        }}
+        onAddExpense={handleAddExpense}
       />
 
       <AddCategoryModal

@@ -3,8 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 import { SummaryCards } from "../cards/SummaryCards";
 import { Plus, LogOutIcon } from "lucide-react";
 import { CategoryList } from "../category/CategoryList";
-import expensesData from "../../data/expenses_data";
-import categoriesData from "../../data/category_data";
 import { TransactionList } from "../transaction/TransactionList";
 import { AddExpenseModal } from "../modal/AddExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
@@ -12,7 +10,11 @@ import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
 import { Category, Expense, NewCategory, NewExpense } from "../../types";
 import { addCategory, getCategories } from "../../services/categoryService";
-import { addExpense, getMonthlyExpenses } from "../../services/expenseService";
+import {
+  addExpense,
+  getMonthlyExpenses,
+  getTotalExpensesForMonth,
+} from "../../services/expenseService";
 
 const months = [
   "January",
@@ -36,6 +38,7 @@ const MainDashboard: React.FC = () => {
     `${currentYear}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
   );
   const [expenses, setExpenses] = React.useState<Expense[]>([]);
+  const [totalExpenses, setTotalExpenses] = React.useState(0);
   const monthlyExpenses = expenses.filter((expense) =>
     expense.date.startsWith(`${selectedMonth}-`),
   );
@@ -51,6 +54,7 @@ const MainDashboard: React.FC = () => {
     if (!userId) {
       setCategories([]);
       setExpenses([]);
+      setTotalExpenses(0);
       return;
     }
 
@@ -67,8 +71,14 @@ const MainDashboard: React.FC = () => {
     void loadCategories();
     const loadExpenses = async () => {
       try {
-        const userExpenses = await getMonthlyExpenses(userId, selectedMonth);
-        if (isActive) setExpenses(userExpenses);
+        const [userExpenses, total] = await Promise.all([
+          getMonthlyExpenses(userId, selectedMonth),
+          getTotalExpensesForMonth(userId, selectedMonth),
+        ]);
+        if (isActive) {
+          setExpenses(userExpenses);
+          setTotalExpenses(total);
+        }
       } catch (error) {
         console.error("Failed to load expenses:", error);
       }
@@ -158,7 +168,7 @@ const MainDashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <SummaryCards totalBudget={10000} totalSpent={4500} />
+      <SummaryCards totalBudget={10000} totalSpent={totalExpenses} />
       <div className="flex flex-row gap-4 py-4">
         <div className="basis-2/3">
           <DailyBarChart

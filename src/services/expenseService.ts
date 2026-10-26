@@ -56,3 +56,12 @@ export const deleteExpense = async (expenseId: string): Promise<void> => {
   const expenseDocRef = doc(db, "expenses", expenseId);
   await deleteDoc(expenseDocRef);
 };
+
+// Get total expenses for a specific user and month
+export const getTotalExpensesForMonth = async (
+  userId: string,
+  monthString: string,
+): Promise<number> => {
+  const expenses = await getMonthlyExpenses(userId, monthString);
+  return expenses.reduce((total, exp) => total + exp.amount, 0);
+};

@@ -10,6 +10,8 @@ import { AddExpenseModal } from "../modal/AddExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
+import { Category, NewCategory } from "../../types";
+import { addCategory, getCategories } from "../../services/categoryService";
 
 const months = [
   "January",
@@ -40,6 +42,42 @@ const MainDashboard: React.FC = () => {
     React.useState(false);
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const userId = user?.uid;
+
+  React.useEffect(() => {
+    if (!userId) {
+      setCategories([]);
+      return;
+    }
+
+    let isActive = true;
+    const loadCategories = async () => {
+      try {
+        const userCategories = await getCategories(userId);
+        if (isActive) setCategories(userCategories);
+      } catch (error) {
+        console.error("Failed to load categories:", error);
+      }
+    };
+
+    void loadCategories();
+    return () => {
+      isActive = false;
+    };
+  }, [userId]);
+
+  const handleAddCategory = async (newCategory: NewCategory) => {
+    if (!userId) {
+      throw new Error("You must be signed in to add a category.");
+    }
+
+    const id = await addCategory(userId, newCategory);
+    setCategories((currentCategories) => [
+      ...currentCategories,
+      { ...newCategory, id, userId },
+    ]);
+  };
 
   if (!user) {
     return (
@@ -131,7 +169,7 @@ const MainDashboard: React.FC = () => {
           {/* Category list or chart can go here */}
           <CategoryList
             expenses={expensesData}
-            categories={categoriesData}
+            categories={categories}
             onOpenAddCategoryModal={() => setIsAddCategoryModalOpen(true)}
           />
         </div>
@@ -140,7 +178,7 @@ const MainDashboard: React.FC = () => {
       <AddExpenseModal
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
-        categories={categoriesData}
+        categories={categories}
         onAddExpense={async (newExpense) => {
           // Implement add expense logic here
           console.log("Adding new expense:", newExpense);
@@ -150,6 +188,7 @@ const MainDashboard: React.FC = () => {
       <AddCategoryModal
         isOpen={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
+        onAddCategory={handleAddCategory}
       />
     </div>
   );

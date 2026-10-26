@@ -1,14 +1,13 @@
 // src/components/AddCategoryModal.tsx
 import React, { useState } from "react";
 import { NewCategory } from "../../types";
-import { db } from "../../../firebase";
-import { doc, setDoc } from "firebase/firestore";
 import { X, Tag, DollarSign, Palette } from "lucide-react";
 import { CATEGORY_ICONS } from "../category/categoryIcons";
 
 interface AddCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddCategory: (category: NewCategory) => Promise<void>;
 }
 
 const PRESET_COLORS = [
@@ -29,18 +28,23 @@ const PRELIST_ICON = Object.entries(CATEGORY_ICONS)
 export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   isOpen,
   onClose,
+  onAddCategory,
 }) => {
   const [name, setName] = useState<string>("");
   const [monthlyBudget, setMonthlyBudget] = useState<string>("");
   const [color, setColor] = useState<string>(PRESET_COLORS[0]);
   const [icon, setIcon] = useState<string>("House");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !monthlyBudget) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       const newCategory: NewCategory = {
@@ -50,18 +54,18 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         icon,
       };
 
-      await setDoc(doc(db, "categories", name), newCategory);
-      setIsSubmitting(true);
+      await onAddCategory(newCategory);
 
       // Reset form & close
       setName("");
       setMonthlyBudget("");
       setColor(PRESET_COLORS[0]);
       setIcon("House");
-      setIsSubmitting(false);
       onClose();
     } catch (error) {
       console.error("Failed to save category:", error);
+      setSubmitError("Could not save the category. Please try again.");
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -202,6 +206,11 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
               {isSubmitting ? "Creating..." : "Save Category"}
             </button>
           </div>
+          {submitError && (
+            <p role="alert" className="text-sm text-rose-400">
+              {submitError}
+            </p>
+          )}
         </form>
       </div>
     </div>

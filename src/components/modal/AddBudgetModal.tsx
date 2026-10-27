@@ -41,7 +41,7 @@ const AddBudgetModal: React.FC<{
             <X className="w-5 h-5" />
           </button>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/*Budget Field*/}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">

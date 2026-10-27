@@ -15,6 +15,7 @@ import {
   getMonthlyExpenses,
   getTotalExpensesForMonth,
 } from "../../services/expenseService";
+import AddBudgetModal from "../modal/AddBudgetModal";
 
 const months = [
   "January",
@@ -227,6 +228,15 @@ const MainDashboard: React.FC = () => {
         isOpen={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
         onAddCategory={handleAddCategory}
+      />
+
+      <AddBudgetModal
+        isOpen={isChangeBudgetModalOpen}
+        onClose={() => setIsChangeBudgetModalOpen(false)}
+        onAddBudget={async (budget: number) => {
+          // Implement budget change logic here
+          console.log(`New budget set to: ${budget}`);
+        }}
       />
     </div>
   );

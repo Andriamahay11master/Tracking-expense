@@ -18,5 +18,13 @@ export interface Expense {
   createdAt?: Date;
 }
 
+export interface Budget {
+  id?: string;
+  userId: string;
+  budgetMonthly: string;
+  createdAt?: Date;
+}
+
 export type NewExpense = Omit<Expense, "id" | "userId" | "createdAt">;
 export type NewCategory = Omit<Category, "id" | "userId" | "createdAt">;
+export type NewBudget = Omit<Budget, "id" | "userId" | "createdAt">;

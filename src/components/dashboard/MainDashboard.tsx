@@ -158,11 +158,11 @@ const MainDashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-row items-center justify-between py-4">
-        <div className="basis-1/2">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center justify-between py-4">
+        <div className="md:basis-1/2">
           <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>
         </div>
-        <div className="basis-1/2 flex justify-end gap-2">
+        <div className="flex flex-col md:flex-row items-start md:justify-end gap-2 md:basis-1/2 ">
           <button
             className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
             onClick={() => setIsAddExpenseModalOpen(true)}
@@ -195,7 +195,7 @@ const MainDashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-row mb-2 items-center">
+      <div className="flex flex-row py-4 items-center">
         <button
           className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
           onClick={() => setIsChangeBudgetModalOpen(true)}

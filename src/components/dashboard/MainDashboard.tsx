@@ -54,6 +54,7 @@ const MainDashboard: React.FC = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [budget, setBudget] = React.useState<number | null>(null);
   const userId = user?.uid;
+  const defaultBudget = budget ? budget : 5000;
 
   React.useEffect(() => {
     if (!userId) {
@@ -202,7 +203,7 @@ const MainDashboard: React.FC = () => {
           <Plus /> Change Budget
         </button>
       </div>
-      <SummaryCards totalBudget={10000} totalSpent={totalExpenses} />
+      <SummaryCards totalBudget={defaultBudget} totalSpent={totalExpenses} />
       <div className="flex flex-row gap-4 py-4">
         <div className="basis-2/3">
           <DailyBarChart

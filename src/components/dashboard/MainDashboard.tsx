@@ -47,6 +47,8 @@ const MainDashboard: React.FC = () => {
     React.useState(false);
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
+  const [isChangeBudgetModalOpen, setIsChangeBudgetModalOpen] =
+    React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const userId = user?.uid;
 
@@ -167,6 +169,14 @@ const MainDashboard: React.FC = () => {
             Sign Out
           </button>
         </div>
+      </div>
+      <div className="flex flex-row mb-2 items-center">
+        <button
+          className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
+          onClick={() => setIsChangeBudgetModalOpen(true)}
+        >
+          <Plus /> Change Budget
+        </button>
       </div>
       <SummaryCards totalBudget={10000} totalSpent={totalExpenses} />
       <div className="flex flex-row gap-4 py-4">

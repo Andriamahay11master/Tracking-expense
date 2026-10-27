@@ -57,8 +57,8 @@ export const CategoryList: React.FC<CategoryListProps> = ({
                 key={cat.id}
                 className="p-3 bg-slate-950/60 border border-slate-800/80 rounded-xl"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2.5 mb-1">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5md:gap-2.5 mb-1">
                     <div className="flex flex-row">
                       <Icon className="w-5 h-5 text-white mr-2" />
                     </div>

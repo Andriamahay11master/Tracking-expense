@@ -17,7 +17,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
       : 0;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {/* Total Budget Card */}
       <div className="bg-slate-900/80 p-5 rounded-2xl shadow-sm border border-slate-900 flex items-center justify-between">
         <div>

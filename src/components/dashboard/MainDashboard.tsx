@@ -204,19 +204,19 @@ const MainDashboard: React.FC = () => {
         </button>
       </div>
       <SummaryCards totalBudget={defaultBudget} totalSpent={totalExpenses} />
-      <div className="flex flex-row gap-4 py-4">
-        <div className="basis-2/3">
+      <div className="flex flex-col md:flex-row gap-4 py-4">
+        <div className="md:basis-2/3">
           <DailyBarChart
             expenses={monthlyExpenses}
             currentMonth={selectedMonth}
           />
         </div>
-        <div className="basis-1/3">
+        <div className="md:basis-1/3">
           <ExpensePieChart categories={categories} expenses={monthlyExpenses} />
         </div>
       </div>
-      <div className="flex flex-row gap-4">
-        <div className="basis-2/3">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="md:basis-2/3">
           {/* Expenses list or chart can go here */}
           <TransactionList
             expenses={monthlyExpenses}
@@ -231,7 +231,7 @@ const MainDashboard: React.FC = () => {
             }}
           />
         </div>
-        <div className="basis-1/3">
+        <div className="md:basis-1/3">
           {/* Category list or chart can go here */}
           <CategoryList
             expenses={monthlyExpenses}

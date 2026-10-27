@@ -15,6 +15,8 @@ import {
   getMonthlyExpenses,
   getTotalExpensesForMonth,
 } from "../../services/expenseService";
+import AddBudgetModal from "../modal/AddBudgetModal";
+import { addBudget, getLastBudget } from "../../services/budgetService";
 
 const months = [
   "January",
@@ -47,14 +49,19 @@ const MainDashboard: React.FC = () => {
     React.useState(false);
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
+  const [isChangeBudgetModalOpen, setIsChangeBudgetModalOpen] =
+    React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [budget, setBudget] = React.useState<number | null>(null);
   const userId = user?.uid;
+  const defaultBudget = budget ? budget : 5000;
 
   React.useEffect(() => {
     if (!userId) {
       setCategories([]);
       setExpenses([]);
       setTotalExpenses(0);
+      setBudget(null);
       return;
     }
 
@@ -84,6 +91,17 @@ const MainDashboard: React.FC = () => {
       }
     };
     void loadExpenses();
+    const loadBudget = async () => {
+      try {
+        const lastBudget = await getLastBudget(userId);
+        if (isActive) {
+          setBudget(lastBudget ? parseFloat(lastBudget.budgetMonthly) : null);
+        }
+      } catch (error) {
+        console.error("Failed to load budget:", error);
+      }
+    };
+    void loadBudget();
     return () => {
       isActive = false;
     };
@@ -111,6 +129,15 @@ const MainDashboard: React.FC = () => {
       ...currentExpenses,
       { ...newExpense, id, userId },
     ]);
+  };
+
+  const handleAddBudget = async (budget: number) => {
+    if (!userId) {
+      throw new Error("You must be signed in to set a budget.");
+    }
+    const budgetString = budget.toString();
+    await addBudget(userId, { budgetMonthly: budgetString });
+    setBudget(budget);
   };
 
   if (!user) {
@@ -168,7 +195,15 @@ const MainDashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <SummaryCards totalBudget={10000} totalSpent={totalExpenses} />
+      <div className="flex flex-row mb-2 items-center">
+        <button
+          className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
+          onClick={() => setIsChangeBudgetModalOpen(true)}
+        >
+          <Plus /> Change Budget
+        </button>
+      </div>
+      <SummaryCards totalBudget={defaultBudget} totalSpent={totalExpenses} />
       <div className="flex flex-row gap-4 py-4">
         <div className="basis-2/3">
           <DailyBarChart
@@ -217,6 +252,12 @@ const MainDashboard: React.FC = () => {
         isOpen={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
         onAddCategory={handleAddCategory}
+      />
+
+      <AddBudgetModal
+        isOpen={isChangeBudgetModalOpen}
+        onClose={() => setIsChangeBudgetModalOpen(false)}
+        onAddBudget={handleAddBudget}
       />
     </div>
   );

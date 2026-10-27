@@ -16,6 +16,7 @@ import {
   getTotalExpensesForMonth,
 } from "../../services/expenseService";
 import AddBudgetModal from "../modal/AddBudgetModal";
+import { addBudget, getLastBudget } from "../../services/budgetService";
 
 const months = [
   "January",
@@ -51,6 +52,7 @@ const MainDashboard: React.FC = () => {
   const [isChangeBudgetModalOpen, setIsChangeBudgetModalOpen] =
     React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [budget, setBudget] = React.useState<number | null>(null);
   const userId = user?.uid;
 
   React.useEffect(() => {
@@ -58,6 +60,7 @@ const MainDashboard: React.FC = () => {
       setCategories([]);
       setExpenses([]);
       setTotalExpenses(0);
+      setBudget(null);
       return;
     }
 
@@ -87,6 +90,17 @@ const MainDashboard: React.FC = () => {
       }
     };
     void loadExpenses();
+    const loadBudget = async () => {
+      try {
+        const lastBudget = await getLastBudget(userId);
+        if (isActive) {
+          setBudget(lastBudget ? parseFloat(lastBudget.budgetMonthly) : null);
+        }
+      } catch (error) {
+        console.error("Failed to load budget:", error);
+      }
+    };
+    void loadBudget();
     return () => {
       isActive = false;
     };
@@ -114,6 +128,15 @@ const MainDashboard: React.FC = () => {
       ...currentExpenses,
       { ...newExpense, id, userId },
     ]);
+  };
+
+  const handleAddBudget = async (budget: number) => {
+    if (!userId) {
+      throw new Error("You must be signed in to set a budget.");
+    }
+    const budgetString = budget.toString();
+    await addBudget(userId, { budgetMonthly: budgetString });
+    setBudget(budget);
   };
 
   if (!user) {
@@ -233,10 +256,7 @@ const MainDashboard: React.FC = () => {
       <AddBudgetModal
         isOpen={isChangeBudgetModalOpen}
         onClose={() => setIsChangeBudgetModalOpen(false)}
-        onAddBudget={async (budget: number) => {
-          // Implement budget change logic here
-          console.log(`New budget set to: ${budget}`);
-        }}
+        onAddBudget={handleAddBudget}
       />
     </div>
   );

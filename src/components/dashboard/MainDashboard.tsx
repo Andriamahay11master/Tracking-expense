@@ -8,6 +8,7 @@ import { AddExpenseModal } from "../modal/AddExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
+import { BudgetAlerts } from "../alert/BudgetAlerts";
 import { Category, Expense, NewCategory, NewExpense } from "../../types";
 import { addCategory, getCategories } from "../../services/categoryService";
 import {
@@ -204,6 +205,8 @@ const MainDashboard: React.FC = () => {
         </button>
       </div>
       <SummaryCards totalBudget={defaultBudget} totalSpent={totalExpenses} />
+      {/* Warning Banners appear here dynamically when spending hits 85% or 100% */}
+      <BudgetAlerts categories={categories} expenses={monthlyExpenses} />
       <div className="flex flex-col md:flex-row gap-4 py-4">
         <div className="md:basis-2/3">
           <DailyBarChart

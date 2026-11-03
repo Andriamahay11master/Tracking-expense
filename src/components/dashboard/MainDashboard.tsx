@@ -18,6 +18,8 @@ import {
 } from "../../services/expenseService";
 import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
+import { Loader } from "../loader/Loader";
+import { LandingHero } from "../landing/LandingHero";
 
 const months = [
   "January",
@@ -56,6 +58,7 @@ const MainDashboard: React.FC = () => {
   const [budget, setBudget] = React.useState<number | null>(null);
   const userId = user?.uid;
   const defaultBudget = budget ? budget : 5000;
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (!userId) {
@@ -63,10 +66,12 @@ const MainDashboard: React.FC = () => {
       setExpenses([]);
       setTotalExpenses(0);
       setBudget(null);
+      setIsLoading(false);
       return;
     }
 
     let isActive = true;
+    setIsLoading(true);
     const loadCategories = async () => {
       try {
         const userCategories = await getCategories(userId);
@@ -76,7 +81,6 @@ const MainDashboard: React.FC = () => {
       }
     };
 
-    void loadCategories();
     const loadExpenses = async () => {
       try {
         const [userExpenses, total] = await Promise.all([
@@ -102,7 +106,11 @@ const MainDashboard: React.FC = () => {
         console.error("Failed to load budget:", error);
       }
     };
-    void loadBudget();
+    void Promise.all([loadCategories(), loadExpenses(), loadBudget()]).finally(
+      () => {
+        if (isActive) setIsLoading(false);
+      },
+    );
     return () => {
       isActive = false;
     };
@@ -142,23 +150,12 @@ const MainDashboard: React.FC = () => {
   };
 
   if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
-        <h1 className="text-3xl font-bold mb-4 text-slate-800">
-          Expense Tracker
-        </h1>
-        <button
-          onClick={loginWithGoogle}
-          className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition"
-        >
-          Sign In with Google
-        </button>
-      </div>
-    );
+    return <LandingHero loginWithGoogle={loginWithGoogle} />;
   }
 
   return (
     <div className="container mx-auto px-4">
+      {isLoading && <Loader />}
       <div className="flex flex-col gap-2 md:flex-row md:items-center justify-between py-4">
         <div className="md:basis-1/2">
           <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>

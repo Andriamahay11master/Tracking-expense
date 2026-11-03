@@ -5,6 +5,8 @@ import {
   HeartPulse,
   House,
   ShoppingBag,
+  Smartphone,
+  Globe,
 } from "lucide-react";
 
 export const CATEGORY_ICONS = {
@@ -15,4 +17,6 @@ export const CATEGORY_ICONS = {
   Coffee,
   Entertainment: Film,
   Film,
+  Credit: Smartphone,
+  Data: Globe,
 } as const;

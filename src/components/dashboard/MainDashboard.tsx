@@ -19,6 +19,7 @@ import {
 import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
 import { Loader } from "../loader/Loader";
+import { LandingHero } from "../landing/LandingHero";
 
 const months = [
   "January",
@@ -105,13 +106,11 @@ const MainDashboard: React.FC = () => {
         console.error("Failed to load budget:", error);
       }
     };
-    void Promise.all([
-      loadCategories(),
-      loadExpenses(),
-      loadBudget(),
-    ]).finally(() => {
-      if (isActive) setIsLoading(false);
-    });
+    void Promise.all([loadCategories(), loadExpenses(), loadBudget()]).finally(
+      () => {
+        if (isActive) setIsLoading(false);
+      },
+    );
     return () => {
       isActive = false;
     };
@@ -151,19 +150,7 @@ const MainDashboard: React.FC = () => {
   };
 
   if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100">
-        <h1 className="text-3xl font-bold mb-4 text-slate-800">
-          Expense Tracker
-        </h1>
-        <button
-          onClick={loginWithGoogle}
-          className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition"
-        >
-          Sign In with Google
-        </button>
-      </div>
-    );
+    return <LandingHero loginWithGoogle={loginWithGoogle} />;
   }
 
   return (

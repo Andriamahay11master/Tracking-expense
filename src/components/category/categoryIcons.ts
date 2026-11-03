@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   Smartphone,
   Globe,
+  Groceries,
 } from "lucide-react";
 
 export const CATEGORY_ICONS = {
@@ -19,4 +20,5 @@ export const CATEGORY_ICONS = {
   Film,
   Credit: Smartphone,
   Data: Globe,
+  Groceries,
 } as const;

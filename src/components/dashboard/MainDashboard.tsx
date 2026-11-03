@@ -18,6 +18,7 @@ import {
 } from "../../services/expenseService";
 import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
+import { Loader } from "../loader/Loader";
 
 const months = [
   "January",
@@ -56,6 +57,7 @@ const MainDashboard: React.FC = () => {
   const [budget, setBudget] = React.useState<number | null>(null);
   const userId = user?.uid;
   const defaultBudget = budget ? budget : 5000;
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (!userId) {
@@ -159,6 +161,7 @@ const MainDashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4">
+      {isLoading && <Loader />}
       <div className="flex flex-col gap-2 md:flex-row md:items-center justify-between py-4">
         <div className="md:basis-1/2">
           <h1 className="text-2xl font-bold">Welcome, {user.displayName}</h1>

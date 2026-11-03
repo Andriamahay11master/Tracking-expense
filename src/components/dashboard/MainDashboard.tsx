@@ -65,10 +65,12 @@ const MainDashboard: React.FC = () => {
       setExpenses([]);
       setTotalExpenses(0);
       setBudget(null);
+      setIsLoading(false);
       return;
     }
 
     let isActive = true;
+    setIsLoading(true);
     const loadCategories = async () => {
       try {
         const userCategories = await getCategories(userId);
@@ -78,7 +80,6 @@ const MainDashboard: React.FC = () => {
       }
     };
 
-    void loadCategories();
     const loadExpenses = async () => {
       try {
         const [userExpenses, total] = await Promise.all([
@@ -104,7 +105,13 @@ const MainDashboard: React.FC = () => {
         console.error("Failed to load budget:", error);
       }
     };
-    void loadBudget();
+    void Promise.all([
+      loadCategories(),
+      loadExpenses(),
+      loadBudget(),
+    ]).finally(() => {
+      if (isActive) setIsLoading(false);
+    });
     return () => {
       isActive = false;
     };

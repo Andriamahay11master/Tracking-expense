@@ -1,11 +1,14 @@
 import { AuthProvider } from "./context/AuthContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import "./App.css";
 
 function App() {
   return (
     <AuthProvider>
-      <MainDashboard />
+      <CurrencyProvider>
+        <MainDashboard />
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

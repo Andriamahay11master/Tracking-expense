@@ -1,5 +1,6 @@
 import React from "react";
 import { DollarSign, Wallet, PiggyBank, PieChart } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface SummaryCardsProps {
   totalBudget: number;
@@ -10,6 +11,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
   totalBudget,
   totalSpent,
 }) => {
+  const { formatAmount } = useCurrency();
   const remaining = totalBudget - totalSpent;
   const spentPercent =
     totalBudget > 0
@@ -25,10 +27,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             Total Budget
           </p>
           <p className="text-2xl font-bold text-white mt-1">
-            $
-            {totalBudget.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-            })}
+            {formatAmount(totalBudget)}
           </p>
         </div>
         <div className="p-3 bg-indigo-900/80 text-indigo-600 rounded-xl">
@@ -43,8 +42,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             Total Spent
           </p>
           <p className="text-2xl font-bold text-rose-800 mt-1">
-            $
-            {totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {formatAmount(totalSpent)}
           </p>
         </div>
         <div className="p-3 bg-rose-800/80 text-rose-600 rounded-xl">
@@ -61,7 +59,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
           <p
             className={`text-2xl font-bold mt-1 ${remaining >= 0 ? "text-emerald-600" : "text-rose-600"}`}
           >
-            ${remaining.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {formatAmount(remaining)}
           </p>
         </div>
         <div

@@ -2,6 +2,7 @@ import React from "react";
 import { Category, Expense } from "../../types";
 import { Plus, Tag } from "lucide-react";
 import { CATEGORY_ICONS } from "./categoryIcons";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface CategoryListProps {
   categories: Category[];
@@ -14,6 +15,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
   expenses,
   onOpenAddCategoryModal,
 }) => {
+  const { formatAmount } = useCurrency();
   // Helper to calculate total spending per category
   const getCategorySpent = (categoryId: string) => {
     return expenses
@@ -67,9 +69,9 @@ export const CategoryList: React.FC<CategoryListProps> = ({
                     </span>
                   </div>
                   <span className="text-xs font-medium text-slate-500">
-                    ${spent.toFixed(2)} /{" "}
+                    {formatAmount(spent)} /{" "}
                     <span className="text-slate-400">
-                      ${cat.monthlyBudget.toFixed(2)}
+                      {formatAmount(cat.monthlyBudget)}
                     </span>
                   </span>
                 </div>

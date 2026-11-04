@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Expense, Category } from "../../types";
 import { Search, Trash2, Filter, Edit, Tag } from "lucide-react";
 import { CATEGORY_ICONS } from "../category/categoryIcons";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface TransactionListProps {
   expenses: Expense[];
@@ -18,7 +19,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
-
+  const { formatAmount } = useCurrency();
   // Map category IDs for quick lookup
   const categoryMap = new Map<string, Category>(
     categories.map((c) => [c.id!, c]),
@@ -117,7 +118,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                       </span>
                     </td>
                     <td className="py-3 px-2 text-right font-semibold text-white">
-                      ${exp.amount.toFixed(2)}
+                      {formatAmount(exp.amount)}
                     </td>
                     <td className="py-3 px-2 text-center">
                       <button

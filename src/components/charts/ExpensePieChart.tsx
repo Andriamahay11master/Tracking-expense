@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Category, Expense } from "../../types";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface ExpensePieChartProps {
   categories: Category[];
@@ -28,6 +29,7 @@ interface CustomTooltipProps {
 }
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  const { formatAmount } = useCurrency();
   if (active && payload && payload.length) {
     const data = payload[0].payload as PieDataPoint;
     return (
@@ -35,7 +37,9 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
         <p className="font-semibold">{data.name}</p>
         <p className="text-slate-300 mt-0.5">
           Spent:{" "}
-          <span className="font-bold text-white">${data.value.toFixed(2)}</span>
+          <span className="font-bold text-white">
+            {formatAmount(data.value)}
+          </span>
         </p>
       </div>
     );

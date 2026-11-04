@@ -114,7 +114,7 @@ const MainDashboard: React.FC = () => {
     return () => {
       isActive = false;
     };
-  }, [userId, selectedMonth]);
+  }, [userId, selectedMonth, expenses.length, categories.length]);
 
   const handleAddCategory = async (newCategory: NewCategory) => {
     if (!userId) {

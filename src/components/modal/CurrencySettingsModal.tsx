@@ -30,11 +30,11 @@ export const CurrencySettingsModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-      <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+      <div className="bg-slate-800 w-full max-w-sm rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
+        <div className="flex justify-between items-center px-6 py-4 border-b border-slate-500 bg-slate-500/50">
           <div className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-indigo-600" />
-            <h3 className="font-bold text-slate-800">Currency Settings</h3>
+            <Globe className="w-5 h-5 text-indigo-100" />
+            <h3 className="font-bold text-white">Currency Settings</h3>
           </div>
           <button
             onClick={onClose}
@@ -52,7 +52,7 @@ export const CurrencySettingsModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <select
               value={selectedCode}
               onChange={(e) => setSelectedCode(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              className="w-full px-3 py-2 bg-slate-900 border border-slate-900 rounded-xl text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               {SUPPORTED_CURRENCIES.map((c) => (
                 <option key={c.code} value={c.code}>

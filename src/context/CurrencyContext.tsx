@@ -62,7 +62,7 @@ export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({
 
   // Helper function to format numbers with current symbol (e.g., "$100.00" or "Ar 100.00")
   const formatAmount = (amount: number): string => {
-    return `${currency.currencySymbol}${amount.toLocaleString(undefined, {
+    return `${currency.currencySymbol} ${amount.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;

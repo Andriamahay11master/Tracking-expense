@@ -16,10 +16,6 @@ import {
   getMonthlyExpenses,
   getTotalExpensesForMonth,
 } from "../../services/expenseService";
-import {
-  getUserSettings,
-  updateUserSettings,
-} from "../../services/currencyService";
 import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
 import { Loader } from "../loader/Loader";

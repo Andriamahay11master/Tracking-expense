@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Expense } from "../../types";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface DailyBarChartProps {
   expenses: Expense[];
@@ -32,6 +33,7 @@ const CustomBarTooltip = ({
   payload,
   label,
 }: CustomBarTooltipProps) => {
+  const { formatAmount } = useCurrency();
   if (active && payload && payload.length) {
     const value = payload[0].value || 0;
     return (
@@ -39,7 +41,7 @@ const CustomBarTooltip = ({
         <p className="font-semibold">{label}</p>
         <p className="text-slate-300 mt-0.5">
           Total:{" "}
-          <span className="font-bold text-white">${value.toFixed(2)}</span>
+          <span className="font-bold text-white">{formatAmount(value)}</span>
         </p>
       </div>
     );
@@ -51,6 +53,7 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
   expenses,
   currentMonth,
 }) => {
+  const { formatAmount } = useCurrency();
   // Extract year and month, then generate array for all days in month
   const [yearStr, monthStr] = currentMonth.split("-");
   const year = parseInt(yearStr, 10);
@@ -101,7 +104,7 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 11, fill: "#94a3b8" }}
-              tickFormatter={(val) => `$${val}`}
+              tickFormatter={(val) => formatAmount(val)}
             />
             <Tooltip content={<CustomBarTooltip />} />
             <Bar dataKey="total" fill="#6366f1" radius={[4, 4, 0, 0]} />

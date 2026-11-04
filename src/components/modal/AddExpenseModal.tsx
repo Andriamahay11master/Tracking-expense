@@ -1,7 +1,8 @@
 // src/components/AddExpenseModal.tsx
 import React, { useState } from "react";
 import { Category, NewExpense } from "../../types";
-import { X, DollarSign, Calendar, Tag, FileText } from "lucide-react";
+import { X, Banknote, Calendar, Tag, FileText } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface AddExpenseModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   categories,
   onAddExpense,
 }) => {
+  const { currency } = useCurrency();
   const [amount, setAmount] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>(categories[0]?.id || "");
@@ -69,10 +71,10 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           {/* Amount Field */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-              Amount ($)
+              Amount ({currency.currencySymbol})
             </label>
             <div className="relative">
-              <DollarSign className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Banknote className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="number"
                 step="0.01"

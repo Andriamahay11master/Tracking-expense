@@ -1,11 +1,13 @@
-import { DollarSign, X } from "lucide-react";
+import { Banknote, X } from "lucide-react";
 import React, { useState } from "react";
+import { useCurrency } from "../../context/CurrencyContext";
 
 const AddBudgetModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   onAddBudget: (budget: number) => Promise<void>;
 }> = ({ isOpen, onClose, onAddBudget }) => {
+  const { currency } = useCurrency();
   const [budget, setBudget] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -45,10 +47,10 @@ const AddBudgetModal: React.FC<{
           {/*Budget Field*/}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-              Budget ($)
+              Budget ({currency.currencySymbol})
             </label>
             <div className="relative">
-              <DollarSign className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Banknote className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="number"
                 step="0.01"

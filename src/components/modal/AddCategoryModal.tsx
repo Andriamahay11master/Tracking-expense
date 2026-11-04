@@ -1,8 +1,9 @@
 // src/components/AddCategoryModal.tsx
 import React, { useState } from "react";
 import { NewCategory } from "../../types";
-import { X, Tag, DollarSign, Palette } from "lucide-react";
+import { X, Tag, Banknote, Palette } from "lucide-react";
 import { CATEGORY_ICONS } from "../category/categoryIcons";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface AddCategoryModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   onClose,
   onAddCategory,
 }) => {
+  const { currency } = useCurrency();
   const [name, setName] = useState<string>("");
   const [monthlyBudget, setMonthlyBudget] = useState<string>("");
   const [color, setColor] = useState<string>(PRESET_COLORS[0]);
@@ -107,10 +109,10 @@ export const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           {/* Monthly Budget */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-              Monthly Budget ($)
+              Monthly Budget ({currency.currencySymbol})
             </label>
             <div className="relative">
-              <DollarSign className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Banknote className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="number"
                 step="0.01"

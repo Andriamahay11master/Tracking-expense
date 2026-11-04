@@ -20,6 +20,8 @@ import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
 import { Loader } from "../loader/Loader";
 import { LandingHero } from "../landing/LandingHero";
+import { CurrencySettingsModal } from "../modal/CurrencySettingsModal";
+import { Footer } from "../footer/Footer";
 
 const months = [
   "January",
@@ -53,6 +55,8 @@ const MainDashboard: React.FC = () => {
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
   const [isChangeBudgetModalOpen, setIsChangeBudgetModalOpen] =
+    React.useState(false);
+  const [isChangeCurrencyModalOpen, setIsChangeCurrencyModalOpen] =
     React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [budget, setBudget] = React.useState<number | null>(null);
@@ -114,7 +118,7 @@ const MainDashboard: React.FC = () => {
     return () => {
       isActive = false;
     };
-  }, [userId, selectedMonth]);
+  }, [userId, selectedMonth, expenses.length, categories.length]);
 
   const handleAddCategory = async (newCategory: NewCategory) => {
     if (!userId) {
@@ -193,12 +197,18 @@ const MainDashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-row py-4 items-center">
+      <div className="flex flex-col gap-2 md:flex-row py-4 items-center">
         <button
           className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
           onClick={() => setIsChangeBudgetModalOpen(true)}
         >
           <Plus /> Change Budget
+        </button>
+        <button
+          className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
+          onClick={() => setIsChangeCurrencyModalOpen(true)}
+        >
+          <Plus /> Change Currency
         </button>
       </div>
       <SummaryCards totalBudget={defaultBudget} totalSpent={totalExpenses} />
@@ -241,6 +251,8 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
 
+      <Footer className="mt-8" />
+
       <AddExpenseModal
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
@@ -258,6 +270,11 @@ const MainDashboard: React.FC = () => {
         isOpen={isChangeBudgetModalOpen}
         onClose={() => setIsChangeBudgetModalOpen(false)}
         onAddBudget={handleAddBudget}
+      />
+
+      <CurrencySettingsModal
+        isOpen={isChangeCurrencyModalOpen}
+        onClose={() => setIsChangeCurrencyModalOpen(false)}
       />
     </div>
   );

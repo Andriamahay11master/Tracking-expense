@@ -21,6 +21,7 @@ import { addBudget, getLastBudget } from "../../services/budgetService";
 import { Loader } from "../loader/Loader";
 import { LandingHero } from "../landing/LandingHero";
 import { CurrencySettingsModal } from "../modal/CurrencySettingsModal";
+import { Footer } from "../footer/Footer";
 
 const months = [
   "January",
@@ -249,6 +250,8 @@ const MainDashboard: React.FC = () => {
           />
         </div>
       </div>
+
+      <Footer className="mt-8" />
 
       <AddExpenseModal
         isOpen={isAddExpenseModalOpen}

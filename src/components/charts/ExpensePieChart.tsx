@@ -28,8 +28,8 @@ interface CustomTooltipProps {
   payload?: Array<{ payload: PieDataPoint }>;
 }
 
-const { formatAmount } = useCurrency();
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  const { formatAmount } = useCurrency();
   if (active && payload && payload.length) {
     const data = payload[0].payload as PieDataPoint;
     return (

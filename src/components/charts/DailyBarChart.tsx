@@ -28,13 +28,12 @@ interface CustomBarTooltipProps {
   label?: string;
 }
 
-const { formatAmount } = useCurrency();
-
 const CustomBarTooltip = ({
   active,
   payload,
   label,
 }: CustomBarTooltipProps) => {
+  const { formatAmount } = useCurrency();
   if (active && payload && payload.length) {
     const value = payload[0].value || 0;
     return (
@@ -54,6 +53,7 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
   expenses,
   currentMonth,
 }) => {
+  const { formatAmount } = useCurrency();
   // Extract year and month, then generate array for all days in month
   const [yearStr, monthStr] = currentMonth.split("-");
   const year = parseInt(yearStr, 10);

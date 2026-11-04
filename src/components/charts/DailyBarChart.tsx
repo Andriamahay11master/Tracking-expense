@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Expense } from "../../types";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface DailyBarChartProps {
   expenses: Expense[];
@@ -27,6 +28,8 @@ interface CustomBarTooltipProps {
   label?: string;
 }
 
+const { formatAmount } = useCurrency();
+
 const CustomBarTooltip = ({
   active,
   payload,
@@ -39,7 +42,7 @@ const CustomBarTooltip = ({
         <p className="font-semibold">{label}</p>
         <p className="text-slate-300 mt-0.5">
           Total:{" "}
-          <span className="font-bold text-white">${value.toFixed(2)}</span>
+          <span className="font-bold text-white">{formatAmount(value)}</span>
         </p>
       </div>
     );
@@ -101,7 +104,7 @@ export const DailyBarChart: React.FC<DailyBarChartProps> = ({
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 11, fill: "#94a3b8" }}
-              tickFormatter={(val) => `$${val}`}
+              tickFormatter={(val) => formatAmount(val)}
             />
             <Tooltip content={<CustomBarTooltip />} />
             <Bar dataKey="total" fill="#6366f1" radius={[4, 4, 0, 0]} />

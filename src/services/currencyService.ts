@@ -1,4 +1,4 @@
-// src/services/expenseService.ts
+// src/services/currencyService.ts
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { UserSettings } from "../types";

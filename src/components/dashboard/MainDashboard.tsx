@@ -4,7 +4,7 @@ import { SummaryCards } from "../cards/SummaryCards";
 import { Plus, LogOutIcon } from "lucide-react";
 import { CategoryList } from "../category/CategoryList";
 import { TransactionList } from "../transaction/TransactionList";
-import { AddExpenseModal } from "../modal/AddExpenseModal";
+import { ExpenseModal } from "../modal/ExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
@@ -253,7 +253,7 @@ const MainDashboard: React.FC = () => {
 
       <Footer className="mt-8" />
 
-      <AddExpenseModal
+      <ExpenseModal
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
         categories={categories}

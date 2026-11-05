@@ -13,6 +13,7 @@ import { Category, Expense, NewCategory, NewExpense } from "../../types";
 import { addCategory, getCategories } from "../../services/categoryService";
 import {
   addExpense,
+  deleteExpense,
   getMonthlyExpenses,
   getTotalExpensesForMonth,
   updateExpense,
@@ -23,6 +24,7 @@ import { Loader } from "../loader/Loader";
 import { LandingHero } from "../landing/LandingHero";
 import { CurrencySettingsModal } from "../modal/CurrencySettingsModal";
 import { Footer } from "../footer/Footer";
+import { Alert } from "../alert/Alert";
 
 const months = [
   "January",
@@ -67,6 +69,7 @@ const MainDashboard: React.FC = () => {
   const userId = user?.uid;
   const defaultBudget = budget ? budget : 5000;
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isExpenseDeleted, setisExpenseDeleted] = React.useState(false);
 
   React.useEffect(() => {
     if (!userId) {
@@ -177,6 +180,27 @@ const MainDashboard: React.FC = () => {
     );
   };
 
+  const handleDeleteExpense = async (expenseId: string) => {
+    if (!userId) {
+      throw new Error("You must be signed in to delete an expense.");
+    }
+    try {
+      await deleteExpense(expenseId);
+      const updatedExpenses = await getMonthlyExpenses(userId, selectedMonth);
+      setExpenses(updatedExpenses);
+      setTotalExpenses(
+        updatedExpenses.reduce((total, expense) => total + expense.amount, 0),
+      );
+    } catch (error) {
+      console.error("Failed to delete expense:", error);
+    } finally {
+      setisExpenseDeleted(true);
+      setTimeout(() => {
+        setisExpenseDeleted(false);
+      }, 3000); // Hide the alert after 3 seconds
+    }
+  };
+
   if (!user) {
     return <LandingHero loginWithGoogle={loginWithGoogle} />;
   }
@@ -259,10 +283,7 @@ const MainDashboard: React.FC = () => {
             expenses={monthlyExpenses}
             categories={categories}
             onEditExpense={handleEditExpense}
-            onDeleteExpense={async (expenseId: string) => {
-              // Implement deletion logic here
-              console.log(`Delete expense with ID: ${expenseId}`);
-            }}
+            onDeleteExpense={handleDeleteExpense}
           />
         </div>
         <div className="md:basis-1/3">
@@ -304,6 +325,12 @@ const MainDashboard: React.FC = () => {
       <CurrencySettingsModal
         isOpen={isChangeCurrencyModalOpen}
         onClose={() => setIsChangeCurrencyModalOpen(false)}
+      />
+
+      <Alert
+        appearAlert={isExpenseDeleted}
+        type="success"
+        message="Expense deleted successfully!"
       />
     </div>
   );

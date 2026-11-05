@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
 
 interface BudgetAlertsProps {
   categories: Category[];
@@ -26,6 +27,7 @@ export const BudgetAlerts: React.FC<BudgetAlertsProps> = ({
   categories,
   expenses,
 }) => {
+  const { formatAmount } = useCurrency();
   const [dismissedCategories, setDismissedCategories] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -64,7 +66,7 @@ export const BudgetAlerts: React.FC<BudgetAlertsProps> = ({
   const warningCount = alerts.filter((a) => a.type === "warning").length;
 
   return (
-    <div className="mb-6 space-y-3">
+    <div className="my-6 space-y-3">
       {/* Header Bar showing quick summary */}
       <div className="flex items-center justify-between p-4 bg-slate-900 text-white rounded-2xl shadow-sm">
         <div className="flex items-center gap-3">
@@ -148,10 +150,10 @@ export const BudgetAlerts: React.FC<BudgetAlertsProps> = ({
                         <>
                           You have exceeded your limit by{" "}
                           <span className="font-bold text-rose-700">
-                            ${overAmount.toFixed(2)}
+                            {formatAmount(overAmount)}
                           </span>
-                          . Spent: <strong>${spent.toFixed(2)}</strong> /
-                          Budget: ${budget.toFixed(2)}
+                          . Spent: <strong>{formatAmount(spent)}</strong> /
+                          Budget: {formatAmount(budget)}
                         </>
                       ) : (
                         <>

@@ -7,7 +7,7 @@ import { useCurrency } from "../../context/CurrencyContext";
 interface TransactionListProps {
   expenses: Expense[];
   categories: Category[];
-  onEditExpense: (expenseId: string) => void;
+  onEditExpense: (expense: Expense) => void;
   onDeleteExpense: (expenseId: string) => Promise<void>;
 }
 
@@ -124,7 +124,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                       <button
                         className="p-1.5 text-slate-400 hover:text-indigo-500 rounded-lg hover:bg-indigo-900/80 transition mr-1"
                         title="Edit Expense"
-                        onClick={() => exp.id && onEditExpense(exp.id)}
+                        onClick={() => exp.id && onEditExpense(exp)}
                       >
                         <Edit className="w-4 h-4" />
                       </button>

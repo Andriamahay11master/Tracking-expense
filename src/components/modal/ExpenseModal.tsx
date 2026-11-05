@@ -1,21 +1,25 @@
-// src/components/AddExpenseModal.tsx
-import React, { useState } from "react";
-import { Category, NewExpense } from "../../types";
+// src/components/ExpenseModal.tsx
+import React, { useEffect, useState } from "react";
+import { Category, Expense, NewExpense } from "../../types";
 import { X, Banknote, Calendar, Tag, FileText } from "lucide-react";
 import { useCurrency } from "../../context/CurrencyContext";
 
-interface AddExpenseModalProps {
+interface ExpenseModalProps {
   isOpen: boolean;
   onClose: () => void;
   categories: Category[];
+  expenseToEdit?: Expense | null; // Optional prop for editing an existing expense
   onAddExpense: (expense: NewExpense) => Promise<void>;
+  onEditExpense?: (expenseId: string, expense: NewExpense) => Promise<void>; // Optional prop for editing an existing expense
 }
 
-export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
+export const ExpenseModal: React.FC<ExpenseModalProps> = ({
   isOpen,
   onClose,
   categories,
+  expenseToEdit,
   onAddExpense,
+  onEditExpense,
 }) => {
   const { currency } = useCurrency();
   const [amount, setAmount] = useState<string>("");
@@ -25,6 +29,20 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
     new Date().toISOString().split("T")[0],
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const isEditMode = !!expenseToEdit;
+  const defaultCategoryId = categories[0]?.id ?? "";
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setAmount(expenseToEdit ? String(expenseToEdit.amount) : "");
+    setDescription(expenseToEdit?.description ?? "");
+    setCategoryId(expenseToEdit?.categoryId ?? defaultCategoryId);
+    setDate(
+      expenseToEdit?.date ?? new Date().toISOString().split("T")[0],
+    );
+    setIsSubmitting(false);
+  }, [isOpen, expenseToEdit, defaultCategoryId]);
 
   if (!isOpen) return null;
 
@@ -34,12 +52,22 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
 
     try {
       setIsSubmitting(true);
-      await onAddExpense({
-        amount: parseFloat(amount),
-        description,
-        categoryId,
-        date,
-      });
+
+      if (isEditMode && expenseToEdit?.id && onEditExpense) {
+        await onEditExpense(expenseToEdit.id, {
+          amount: parseFloat(amount),
+          description,
+          categoryId,
+          date,
+        });
+      } else {
+        await onAddExpense({
+          amount: parseFloat(amount),
+          description,
+          categoryId,
+          date,
+        });
+      }
 
       // Reset form & close
       setAmount("");
@@ -57,7 +85,9 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
       <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
         {/* Modal Header */}
         <div className="flex justify-between items-center px-6 py-4 border-b border-slate-500 bg-slate-700/50">
-          <h3 className="font-bold text-white text-lg">Add New Expense</h3>
+          <h3 className="font-bold text-white text-lg">
+            {isEditMode ? "Edit Expense" : "Add New Expense"}
+          </h3>
           <button
             onClick={onClose}
             className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
@@ -162,7 +192,11 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
               disabled={isSubmitting}
               className="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-md transition disabled:opacity-50"
             >
-              {isSubmitting ? "Saving..." : "Add Expense"}
+              {isSubmitting
+                ? "Saving..."
+                : isEditMode
+                  ? "Edit Expense"
+                  : "Add Expense"}
             </button>
           </div>
         </form>

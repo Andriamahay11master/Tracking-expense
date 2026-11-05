@@ -4,7 +4,7 @@ import { SummaryCards } from "../cards/SummaryCards";
 import { Plus, LogOutIcon } from "lucide-react";
 import { CategoryList } from "../category/CategoryList";
 import { TransactionList } from "../transaction/TransactionList";
-import { AddExpenseModal } from "../modal/AddExpenseModal";
+import { ExpenseModal } from "../modal/ExpenseModal";
 import { AddCategoryModal } from "../modal/AddCategoryModal";
 import { ExpensePieChart } from "../charts/ExpensePieChart";
 import { DailyBarChart } from "../charts/DailyBarChart";
@@ -13,8 +13,10 @@ import { Category, Expense, NewCategory, NewExpense } from "../../types";
 import { addCategory, getCategories } from "../../services/categoryService";
 import {
   addExpense,
+  deleteExpense,
   getMonthlyExpenses,
   getTotalExpensesForMonth,
+  updateExpense,
 } from "../../services/expenseService";
 import AddBudgetModal from "../modal/AddBudgetModal";
 import { addBudget, getLastBudget } from "../../services/budgetService";
@@ -22,6 +24,7 @@ import { Loader } from "../loader/Loader";
 import { LandingHero } from "../landing/LandingHero";
 import { CurrencySettingsModal } from "../modal/CurrencySettingsModal";
 import { Footer } from "../footer/Footer";
+import { Alert } from "../alert/Alert";
 
 const months = [
   "January",
@@ -52,6 +55,9 @@ const MainDashboard: React.FC = () => {
   const { user, loginWithGoogle, logout } = useAuth();
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] =
     React.useState(false);
+  const [expenseToEdit, setExpenseToEdit] = React.useState<Expense | null>(
+    null,
+  );
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] =
     React.useState(false);
   const [isChangeBudgetModalOpen, setIsChangeBudgetModalOpen] =
@@ -63,6 +69,7 @@ const MainDashboard: React.FC = () => {
   const userId = user?.uid;
   const defaultBudget = budget ? budget : 5000;
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isExpenseDeleted, setisExpenseDeleted] = React.useState(false);
 
   React.useEffect(() => {
     if (!userId) {
@@ -153,6 +160,47 @@ const MainDashboard: React.FC = () => {
     setBudget(budget);
   };
 
+  const handleEditExpense = (expense: Expense) => {
+    setExpenseToEdit(expense);
+    setIsAddExpenseModalOpen(true);
+  };
+
+  const handleUpdateExpense = async (
+    expenseId: string,
+    updatedExpense: NewExpense,
+  ) => {
+    if (!userId) {
+      throw new Error("You must be signed in to edit an expense.");
+    }
+    await updateExpense(expenseId, updatedExpense);
+    const updatedExpenses = await getMonthlyExpenses(userId, selectedMonth);
+    setExpenses(updatedExpenses);
+    setTotalExpenses(
+      updatedExpenses.reduce((total, expense) => total + expense.amount, 0),
+    );
+  };
+
+  const handleDeleteExpense = async (expenseId: string) => {
+    if (!userId) {
+      throw new Error("You must be signed in to delete an expense.");
+    }
+    try {
+      await deleteExpense(expenseId);
+      const updatedExpenses = await getMonthlyExpenses(userId, selectedMonth);
+      setExpenses(updatedExpenses);
+      setTotalExpenses(
+        updatedExpenses.reduce((total, expense) => total + expense.amount, 0),
+      );
+    } catch (error) {
+      console.error("Failed to delete expense:", error);
+    } finally {
+      setisExpenseDeleted(true);
+      setTimeout(() => {
+        setisExpenseDeleted(false);
+      }, 3000); // Hide the alert after 3 seconds
+    }
+  };
+
   if (!user) {
     return <LandingHero loginWithGoogle={loginWithGoogle} />;
   }
@@ -167,7 +215,10 @@ const MainDashboard: React.FC = () => {
         <div className="flex flex-col md:flex-row items-start md:justify-end gap-2 md:basis-1/2 ">
           <button
             className="px-4 py-2 bg-violet-900 text-white font-semibold rounded-md flex items-center gap-2 hover:bg-violet-800 mr-2"
-            onClick={() => setIsAddExpenseModalOpen(true)}
+            onClick={() => {
+              setExpenseToEdit(null);
+              setIsAddExpenseModalOpen(true);
+            }}
           >
             <Plus /> Add Expense
           </button>
@@ -231,14 +282,8 @@ const MainDashboard: React.FC = () => {
           <TransactionList
             expenses={monthlyExpenses}
             categories={categories}
-            onEditExpense={(expenseId: string) => {
-              // Implement edit logic here
-              console.log(`Edit expense with ID: ${expenseId}`);
-            }}
-            onDeleteExpense={async (expenseId: string) => {
-              // Implement deletion logic here
-              console.log(`Delete expense with ID: ${expenseId}`);
-            }}
+            onEditExpense={handleEditExpense}
+            onDeleteExpense={handleDeleteExpense}
           />
         </div>
         <div className="md:basis-1/3">
@@ -253,11 +298,16 @@ const MainDashboard: React.FC = () => {
 
       <Footer className="mt-8" />
 
-      <AddExpenseModal
+      <ExpenseModal
         isOpen={isAddExpenseModalOpen}
-        onClose={() => setIsAddExpenseModalOpen(false)}
+        onClose={() => {
+          setIsAddExpenseModalOpen(false);
+          setExpenseToEdit(null);
+        }}
         categories={categories}
+        expenseToEdit={expenseToEdit}
         onAddExpense={handleAddExpense}
+        onEditExpense={handleUpdateExpense}
       />
 
       <AddCategoryModal
@@ -275,6 +325,12 @@ const MainDashboard: React.FC = () => {
       <CurrencySettingsModal
         isOpen={isChangeCurrencyModalOpen}
         onClose={() => setIsChangeCurrencyModalOpen(false)}
+      />
+
+      <Alert
+        appearAlert={isExpenseDeleted}
+        type="success"
+        message="Expense deleted successfully!"
       />
     </div>
   );

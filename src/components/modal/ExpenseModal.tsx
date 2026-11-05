@@ -1,5 +1,5 @@
 // src/components/ExpenseModal.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Category, Expense, NewExpense } from "../../types";
 import { X, Banknote, Calendar, Tag, FileText } from "lucide-react";
 import { useCurrency } from "../../context/CurrencyContext";
@@ -30,6 +30,20 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const isEditMode = !!expenseToEdit;
+  const defaultCategoryId = categories[0]?.id ?? "";
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setAmount(expenseToEdit ? String(expenseToEdit.amount) : "");
+    setDescription(expenseToEdit?.description ?? "");
+    setCategoryId(expenseToEdit?.categoryId ?? defaultCategoryId);
+    setDate(
+      expenseToEdit?.date ?? new Date().toISOString().split("T")[0],
+    );
+    setIsSubmitting(false);
+  }, [isOpen, expenseToEdit, defaultCategoryId]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {

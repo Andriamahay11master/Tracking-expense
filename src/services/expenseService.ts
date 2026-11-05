@@ -10,6 +10,7 @@ import {
   serverTimestamp,
   DocumentData,
   QueryDocumentSnapshot,
+  setDoc,
 } from "firebase/firestore";
 import { Expense, NewExpense } from "../types";
 
@@ -64,4 +65,13 @@ export const getTotalExpensesForMonth = async (
 ): Promise<number> => {
   const expenses = await getMonthlyExpenses(userId, monthString);
   return expenses.reduce((total, exp) => total + exp.amount, 0);
+};
+
+//Update expense
+export const updateExpense = async (
+  expenseId: string,
+  expense: NewExpense,
+): Promise<void> => {
+  const expenseDocRef = doc(db, "expenses", expenseId);
+  await setDoc(expenseDocRef, expense, { merge: true });
 };
